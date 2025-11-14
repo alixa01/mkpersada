@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import Navbar from "./components/Navbar/navbar";
+import Navbar from "./components/Navbar";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
 
@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body className={montserrat.className}>
         <Navbar />
-        <main className="pt-20 h-[2000px]">{children}</main>
+        <main className="">{children}</main>
       </body>
     </html>
   );
