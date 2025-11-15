@@ -74,9 +74,9 @@ export default function AboutUsSection() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.4 }}
-        className="w-full md:w-[40%] h-full flex flex-col items-start md:items-center gap-8 sm:gap-10 md:gap-14 px-6 sm:px-12 md:px-4 pb-12 md:pb-0 md:mt-24">
+        className="w-full md:w-[40%] h-full flex flex-col items-center gap-8 sm:gap-10 md:gap-14 px-6 sm:px-12 md:px-4 pb-12 md:pb-0 md:mt-24">
         {/* years */}
-        <motion.div variants={fadeIn} className="flex flex-col text-left">
+        <motion.div variants={fadeIn} className="flex flex-col w-full max-w-xs">
           <h1 className="leading-none pb-2 sm:pb-3 md:pb-4 text-[64px] sm:text-[80px] md:text-[96px] font-medium text-white">
             25+
           </h1>
@@ -89,7 +89,7 @@ export default function AboutUsSection() {
         </motion.div>
 
         {/* projects */}
-        <motion.div variants={fadeIn} className="flex flex-col text-left">
+        <motion.div variants={fadeIn} className="flex flex-col w-full max-w-xs">
           <h1 className="leading-none pb-2 sm:pb-3 md:pb-4 text-[64px] sm:text-[80px] md:text-[96px] font-medium text-white">
             17+
           </h1>
@@ -102,7 +102,7 @@ export default function AboutUsSection() {
         </motion.div>
 
         {/* regions */}
-        <motion.div variants={fadeIn} className="flex flex-col text-left">
+        <motion.div variants={fadeIn} className="flex flex-col w-full max-w-xs">
           <h1 className="leading-none pb-2 sm:pb-3 md:pb-4 text-[64px] sm:text-[80px] md:text-[96px] font-medium text-white">
             5+
           </h1>
