@@ -47,10 +47,10 @@ export default function AboutUsSection() {
         <motion.p
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.3 }}
           className="w-full max-w-full sm:max-w-[600px] md:max-w-[680px] xl:max-w-[760px] mt-6 sm:mt-8 md:mt-[44px] text-[16px] sm:text-[20px] md:text-[24px] xl:text-[28px] font-medium sm:font-semibold text-justify leading-7 sm:leading-9 md:leading-[40px] xl:leading-[45px] text-sub-text tracking-[0.48px] sm:tracking-[0.6px] md:tracking-[0.72px] xl:tracking-[0.84px]">
           {words.map((word, index) => {
-            const delay = index * 0.01;
+            const delay = index * 0.007;
             return (
               <motion.span
                 key={index}
@@ -73,7 +73,7 @@ export default function AboutUsSection() {
         variants={container}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.4 }}
+        viewport={{ once: true, amount: 0.3 }}
         className="w-full md:w-[40%] h-full flex flex-col items-center gap-8 sm:gap-10 md:gap-14 px-6 sm:px-12 md:px-4 pb-12 md:pb-0 md:mt-24">
         {/* years */}
         <motion.div variants={fadeIn} className="flex flex-col w-full max-w-xs">
