@@ -18,6 +18,7 @@ module.exports = {
         "sub-text": "#F3F4F6",
         "footer-text": "#E2E8F0",
         shape: "#DBEAFE",
+        shape2: "#60A5FA",
       },
     },
   },
