@@ -17,6 +17,7 @@ module.exports = {
         primary: "#194670",
         "sub-text": "#F3F4F6",
         shape: "#DBEAFE",
+        shape2: "#60A5FA",
       },
     },
   },
