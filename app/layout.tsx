@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
 import Footer from "./components/Footer/Footer";
+import SmoothScrollProvider from "./components/SmoothScrollProvider";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={montserrat.className}>
+        <SmoothScrollProvider />
         <Navbar />
         <main className="">{children}</main>
         <Footer />
