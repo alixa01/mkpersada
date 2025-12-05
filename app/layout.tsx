@@ -1,31 +1,28 @@
 import type { ReactNode } from "react";
-import Navbar from "./components/Navbar";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
-import Footer from "./components/Footer/Footer";
-import SmoothScrollProvider from "./components/SmoothScrollProvider";
+import Footer from "@/components/layout/Footer";
+import SmoothScrollProvider from "@/components/ui/SmoothScrollProvider";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 });
-// 300 → Light
 
-// 400 → Regular
-
-// 500 → Medium
-
-// 600 → SemiBold
-
-// 700 → Bold
+export const metadata = {
+  title: {
+    default: "PT Mitra Kencana Persada",
+    template: "%s | PT Mitra Kencana Persada",
+  },
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>
+      <body
+        className={`relative overflow-hidden w-screen ${montserrat.className}`}>
         <SmoothScrollProvider />
-        <Navbar />
-        <main className="">{children}</main>
+        <main>{children}</main>
         <Footer />
       </body>
     </html>
