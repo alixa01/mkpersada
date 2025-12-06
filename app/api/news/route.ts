@@ -32,6 +32,11 @@ export async function POST(req: Request) {
       );
     }
 
+    const ifSupabaseUrl = imageUrl.includes("supabase.co/storage");
+    if (!ifSupabaseUrl) {
+      console.warn("Image URL is not from Supabase storage.");
+    }
+
     const slug =
       body.slug ??
       title

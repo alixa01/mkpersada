@@ -4,12 +4,15 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { news } from "@/data/news";
+import type { NewsRoomData } from "@/types/news";
 
-const newestNews = news[0];
-const oldestNews = news.slice(1);
-
-export default function NewsRoomSection() {
+export default function NewsRoomSection({
+  initialNews,
+}: {
+  initialNews: NewsRoomData[];
+}) {
+  const newestNews = initialNews[0];
+  const oldestNews = initialNews.slice(1);
   return (
     <section
       id="newsroom"
@@ -59,121 +62,125 @@ export default function NewsRoomSection() {
             }}
             className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* newest news (left) */}
-            <motion.div
-              className="relative aspect-square rounded-lg overflow-hidden z-10"
-              initial="rest"
-              whileHover="hover"
-              animate="rest">
-              {/* IMAGE */}
+            <Link href={`/news/${newestNews.slug}`}>
+              {" "}
               <motion.div
-                variants={{
-                  rest: { scale: 1 },
-                  hover: { scale: 1.08 },
-                }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="w-full h-full">
-                <Image
-                  src={newestNews.image}
-                  alt={newestNews.title}
-                  fill
-                  className="object-cover"
+                className="relative aspect-square rounded-lg overflow-hidden z-10"
+                initial="rest"
+                whileHover="hover"
+                animate="rest">
+                {/* IMAGE */}
+                <motion.div
+                  variants={{
+                    rest: { scale: 1 },
+                    hover: { scale: 1.08 },
+                  }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="w-full h-full">
+                  <Image
+                    src={newestNews.image}
+                    alt={newestNews.title}
+                    fill
+                    className="object-cover"
+                  />
+                </motion.div>
+
+                {/* OVERLAY*/}
+                <motion.div
+                  variants={{
+                    rest: { opacity: 1 },
+                    hover: { opacity: 0 },
+                  }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="absolute inset-0 z-20 bg-gradient-to-b from-[#194670]/30 to-[#194670]/50"
                 />
+
+                {/* TEXT */}
+                <motion.div
+                  variants={{
+                    rest: { y: 0 },
+                    hover: { y: -10 },
+                  }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  className="absolute inset-x-0 bottom-0 px-4 pb-4 z-30 space-y-2">
+                  <span className="inline-flex items-center gap-2 text-slate-100 text-sm">
+                    <Calendar className="w-4 h-4" />
+                    {newestNews.date}
+                  </span>
+
+                  <h2 className="text-slate-100 text-base md:text-lg font-semibold">
+                    {newestNews.title}
+                  </h2>
+
+                  <span className="mx-1">
+                    <Badge className="px-2 py-0 bg-slate-100/80 text-[#194670] font-medium rounded-full text-xs pointer-events-none">
+                      {newestNews.category}
+                    </Badge>
+                  </span>
+                </motion.div>
               </motion.div>
-
-              {/* OVERLAY*/}
-              <motion.div
-                variants={{
-                  rest: { opacity: 1 },
-                  hover: { opacity: 0 },
-                }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="absolute inset-0 z-20 bg-gradient-to-b from-[#194670]/30 to-[#194670]/50"
-              />
-
-              {/* TEXT */}
-              <motion.div
-                variants={{
-                  rest: { y: 0 },
-                  hover: { y: -10 },
-                }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
-                className="absolute inset-x-0 bottom-0 px-4 pb-4 z-30 space-y-2">
-                <span className="inline-flex items-center gap-2 text-slate-100 text-sm">
-                  <Calendar className="w-4 h-4" />
-                  {newestNews.date}
-                </span>
-
-                <h2 className="text-slate-100 text-base md:text-lg font-semibold">
-                  {newestNews.title}
-                </h2>
-
-                <span className="mx-1">
-                  <Badge className="px-2 py-0 bg-slate-100/80 text-[#194670] font-medium rounded-full text-xs pointer-events-none">
-                    {newestNews.category}
-                  </Badge>
-                </span>
-              </motion.div>
-            </motion.div>
+            </Link>
 
             {/* oldest news (right) */}
             <div className="z-10 grid grid-cols-1 md:grid-cols-2 gap-4">
               {oldestNews.slice(0, 4).map((item, i) => (
-                <motion.div
-                  key={i}
-                  className="relative aspect-square rounded-lg overflow-hidden"
-                  initial="rest"
-                  whileHover="hover"
-                  animate="rest">
-                  {/* IMAGE */}
+                <Link key={i} href={`/news/${item.slug}`}>
                   <motion.div
-                    variants={{
-                      rest: { scale: 1 },
-                      hover: { scale: 1.08 },
-                    }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="w-full h-full">
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      className="object-cover"
+                    className="relative aspect-square rounded-lg overflow-hidden"
+                    initial="rest"
+                    whileHover="hover"
+                    animate="rest">
+                    {/* IMAGE */}
+                    <motion.div
+                      variants={{
+                        rest: { scale: 1 },
+                        hover: { scale: 1.08 },
+                      }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                      className="w-full h-full">
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover"
+                      />
+                    </motion.div>
+
+                    {/* OVERLAY */}
+                    <motion.div
+                      variants={{
+                        rest: { opacity: 1 },
+                        hover: { opacity: 0 },
+                      }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                      className="absolute inset-0 z-20 bg-gradient-to-b from-[#194670]/30 to-[#194670]/50"
                     />
+
+                    {/* TEXT */}
+                    <motion.div
+                      variants={{
+                        rest: { y: 0, opacity: 1 },
+                        hover: { y: -10, opacity: 1 },
+                      }}
+                      transition={{ duration: 0.35, ease: "easeOut" }}
+                      className="absolute bottom-4 left-4 right-4 z-30">
+                      <span className="flex items-center gap-2 text-slate-100 text-sm">
+                        <Calendar className="w-4 h-4" />
+                        {item.date}
+                      </span>
+
+                      <h2 className="mt-1 text-slate-100 text-base md:text-sm font-semibold leading-snug">
+                        {item.title}
+                      </h2>
+
+                      <span className="mx-1">
+                        <Badge className="px-2 py-0 bg-slate-100/80 text-[#194670] font-medium rounded-full text-xs pointer-events-none">
+                          {item.category}
+                        </Badge>
+                      </span>
+                    </motion.div>
                   </motion.div>
-
-                  {/* OVERLAY */}
-                  <motion.div
-                    variants={{
-                      rest: { opacity: 1 },
-                      hover: { opacity: 0 },
-                    }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                    className="absolute inset-0 z-20 bg-gradient-to-b from-[#194670]/30 to-[#194670]/50"
-                  />
-
-                  {/* TEXT */}
-                  <motion.div
-                    variants={{
-                      rest: { y: 0, opacity: 1 },
-                      hover: { y: -10, opacity: 1 },
-                    }}
-                    transition={{ duration: 0.35, ease: "easeOut" }}
-                    className="absolute bottom-4 left-4 right-4 z-30">
-                    <span className="flex items-center gap-2 text-slate-100 text-sm">
-                      <Calendar className="w-4 h-4" />
-                      {item.date}
-                    </span>
-
-                    <h2 className="mt-1 text-slate-100 text-base md:text-sm font-semibold leading-snug">
-                      {item.title}
-                    </h2>
-
-                    <span className="mx-1">
-                      <Badge className="px-2 py-0 bg-slate-100/80 text-[#194670] font-medium rounded-full text-xs pointer-events-none">
-                        {item.category}
-                      </Badge>
-                    </span>
-                  </motion.div>
-                </motion.div>
+                </Link>
               ))}
             </div>
           </motion.div>

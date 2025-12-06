@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import NewsContent from "./NewsContent";
 import TableContent from "./TableContent";
 
@@ -23,7 +23,10 @@ function slugify(text: string) {
 }
 
 export default function NewsWithTOC({ news }: { news: NewsData }) {
-  const { htmlWithIds, headings } = useMemo(() => {
+  const [htmlWithIds, setHtmlWithIds] = useState(news.body);
+  const [headings, setHeadings] = useState<Heading[]>([]);
+
+  useEffect(() => {
     const container = document.createElement("div");
     container.innerHTML = news.body;
 
@@ -44,16 +47,16 @@ export default function NewsWithTOC({ news }: { news: NewsData }) {
       });
     });
 
-    return {
-      htmlWithIds: container.innerHTML,
-      headings: result,
-    };
+    setHtmlWithIds(container.innerHTML);
+    setHeadings(result);
   }, [news.body]);
+
   return (
     <div className="mx-auto max-w-7xl lg:pb-8 pb-5 px-6 lg:px-8 flex flex-row">
       <div className="w-full lg:w-[80%] mr-4">
         <NewsContent news={{ excerpt: news.excerpt, body: htmlWithIds }} />
       </div>
+
       <div className="w-[20%] hidden lg:block border-l border-slate-300/80 pl-4">
         <TableContent headings={headings} />
       </div>

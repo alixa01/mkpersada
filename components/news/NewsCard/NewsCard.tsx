@@ -1,24 +1,14 @@
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
+import type { NewsCardData } from "@/types/news";
 
-type NewsItem = {
-  id: string;
-  title: string;
-  slug: string;
-  description: string;
-  date: string;
-  category: string;
-  image: string;
-};
-
-export default function NewsCard({ items }: { items: NewsItem[] }) {
+export default function NewsCard({ items }: { items: NewsCardData[] }) {
   return (
     <>
       {/* news card */}
       {items.map((item) => (
         <Link href={`/news/${item.slug}`} key={item.id}>
-          {" "}
           <div className="flex flex-col md:flex-row gap-6 rounded-xl border-0 border-b border-slate-200/20 py-4 px-2 hover:cursor-pointer">
             {/* right: image */}
             <div className="basis-[20%] md:order-2">

@@ -1,54 +1,9 @@
 import PageHero from "@/components/sections/PageHero";
 import NewsSection from "@/components/news/NewsSection";
-import type { News } from "@prisma/client";
-
-async function getNews(): Promise<News[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/news`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch news");
-  }
-
-  const data = (await res.json()) as News[];
-  return data;
-}
-
-type NewsForSection = {
-  id: string;
-  title: string;
-  slug: string;
-  category: string;
-  imageUrl: string;
-  excerpt: string;
-  body: string;
-  publishedAtISO: string;
-  dateLabel: string;
-};
+import { getNews } from "@/lib/newsApi";
 
 export default async function NewsPage() {
-  const data = await getNews();
-
-  const initialNews: NewsForSection[] = data.map((item) => {
-    const published = new Date(item.publishedAt);
-
-    return {
-      id: item.id,
-      title: item.title,
-      slug: item.slug,
-      category: item.category,
-      imageUrl: item.imageUrl,
-      excerpt: item.excerpt,
-      body: item.body,
-      publishedAtISO: published.toISOString(),
-      dateLabel: new Intl.DateTimeFormat("id-ID", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      }).format(published),
-    };
-  });
+  const initialNews = await getNews();
 
   return (
     <main id="news" className="relative overflow-hidden">

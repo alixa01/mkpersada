@@ -3,25 +3,14 @@
 import { useMemo, useState } from "react";
 import NewsCard from "../NewsCard";
 import SortCategories from "../SortCategories";
-
-type NewsDB = {
-  id: string;
-  title: string;
-  slug: string;
-  category: string;
-  imageUrl: string;
-  excerpt: string;
-  body: string;
-  publishedAtISO: string;
-  dateLabel: string;
-};
+import type { NewsData } from "@/types/news";
 
 const CARD = 5;
 
 export default function NewsSection({
   initialNews,
 }: {
-  initialNews: NewsDB[];
+  initialNews: NewsData[];
 }) {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
