@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import NewsCard from "../NewsCard";
 import SortCategories from "../SortCategories";
 import type { NewsData, NewsCardData } from "@/types/news";
-import { init } from "next/dist/compiled/webpack/webpack";
 
 const CARD = 5;
 
