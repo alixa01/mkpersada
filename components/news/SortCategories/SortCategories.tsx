@@ -11,16 +11,22 @@ import {
 } from "@/components/ui/select";
 import { ArrowDownAZ, Calendar } from "lucide-react";
 
+type SortOption = "Newest" | "Oldest" | "Title";
+
 type SortCategoriesProps = {
   categories: string[];
   selectedCategory: string;
   onCategoryChange: (value: string) => void;
+  sortBy: SortOption;
+  onSortChange: (value: SortOption) => void;
 };
 
 export default function SortCategories({
   categories,
   selectedCategory,
   onCategoryChange,
+  sortBy,
+  onSortChange,
 }: SortCategoriesProps) {
   const pinRef = usePin768();
 
@@ -30,23 +36,33 @@ export default function SortCategories({
         {/* sort by */}
         <div>
           <h1 className="text-white pb-2 font-medium">Sort by</h1>
-          <Select>
+          <Select
+            value={sortBy}
+            onValueChange={(value) => onSortChange(value as SortOption)}>
             <SelectTrigger className="w-[50%] lg:w-full bg-slate-800 text-white border border-slate-600">
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
             <SelectContent className="bg-slate-800 text-white border border-slate-600">
               <SelectGroup>
                 <SelectLabel>
-                  <span className="font-light text-sm">Categories</span>
+                  <span className="font-light text-sm">Sort options</span>
                 </SelectLabel>
-                <SelectItem value="date">
+
+                <SelectItem value="Newest">
                   <span className="flex flex-row items-center gap-2 font-light text-sm">
-                    <Calendar width={15} /> Date
+                    <Calendar width={15} /> Date (Newest)
                   </span>
                 </SelectItem>
-                <SelectItem value="alphabet">
+
+                <SelectItem value="Oldest">
                   <span className="flex flex-row items-center gap-2 font-light text-sm">
-                    <ArrowDownAZ width={15} /> Alphabet
+                    <Calendar width={15} /> Date (Oldest)
+                  </span>
+                </SelectItem>
+
+                <SelectItem value="Title">
+                  <span className="flex flex-row items-center gap-2 font-light text-sm">
+                    <ArrowDownAZ width={15} /> Title (A–Z)
                   </span>
                 </SelectItem>
               </SelectGroup>

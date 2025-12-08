@@ -4,8 +4,11 @@ import { useMemo, useState } from "react";
 import NewsCard from "../NewsCard";
 import SortCategories from "../SortCategories";
 import type { NewsData, NewsCardData } from "@/types/news";
+import { init } from "next/dist/compiled/webpack/webpack";
 
 const CARD = 5;
+
+type sortOption = "Newest" | "Oldest" | "Title";
 
 export default function NewsSection({
   initialNews,
@@ -13,6 +16,7 @@ export default function NewsSection({
   initialNews: NewsData[];
 }) {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [sortBy, setSortBy] = useState<sortOption>("Newest");
 
   const categories = useMemo(
     () => [
@@ -22,12 +26,30 @@ export default function NewsSection({
     [initialNews]
   );
 
-  const filteredNews =
-    selectedCategory === "All"
-      ? initialNews
-      : initialNews.filter((item) => item.category === selectedCategory);
+  const processedNews = useMemo(() => {
+    let data = [...initialNews];
 
-  const topNews = filteredNews.slice(0, CARD);
+    // filter by category
+    if (selectedCategory !== "All") {
+      data = data.filter((item) => item.category === selectedCategory);
+    }
+
+    // sort
+    data.sort((a, b) => {
+      if (sortBy === "Newest" || sortBy === "Oldest") {
+        const dateA = new Date(a.publishedAt).getTime();
+        const dateB = new Date(b.publishedAt).getTime();
+        return sortBy === "Newest" ? dateB - dateA : dateA - dateB;
+      }
+
+      // title
+      return a.title.localeCompare(b.title, "en", { sensitivity: "base" });
+    });
+
+    return data;
+  }, [initialNews, selectedCategory, sortBy]);
+
+  const topNews = processedNews.slice(0, CARD);
 
   const items: NewsCardData[] = topNews.map((item) => ({
     id: item.id,
@@ -54,6 +76,8 @@ export default function NewsSection({
           categories={categories}
           selectedCategory={selectedCategory}
           onCategoryChange={setSelectedCategory}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
         />
       </div>
 
