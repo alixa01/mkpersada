@@ -198,6 +198,7 @@ export default function Navbar({ variant }: NavbarProps) {
                 alt="PT Mitra Kencana Persada Logo"
                 width={60}
                 height={40}
+                loading="eager"
                 className="self-center sm:self-start w-[60px] h-auto md:w-[80px]"
               />
             </Link>

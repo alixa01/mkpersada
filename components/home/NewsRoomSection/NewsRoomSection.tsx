@@ -76,7 +76,7 @@ export default function NewsRoomSection({
                     hover: { scale: 1.08 },
                   }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="w-full h-full">
+                  className="relative w-full h-full">
                   <Image
                     src={newestNews.image}
                     alt={newestNews.title}
@@ -137,7 +137,7 @@ export default function NewsRoomSection({
                         hover: { scale: 1.08 },
                       }}
                       transition={{ duration: 0.4, ease: "easeOut" }}
-                      className="w-full h-full">
+                      className="relative w-full h-full">
                       <Image
                         src={item.image}
                         alt={item.title}
