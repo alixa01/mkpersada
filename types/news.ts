@@ -17,15 +17,14 @@ export type NewsData = {
 export type NewsCardData = {
   id: string;
   title: string;
-  slug: string;
   description: string;
   date: string;
   category: string;
   image: string;
+  slug: string;
 };
 
 export type NewsRoomData = {
-  id: string;
   title: string;
   slug: string;
   date: string;

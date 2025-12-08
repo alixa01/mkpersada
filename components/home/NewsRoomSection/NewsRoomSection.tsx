@@ -11,8 +11,8 @@ export default function NewsRoomSection({
 }: {
   initialNews: NewsRoomData[];
 }) {
-  const newestNews = initialNews[0];
-  const oldestNews = initialNews.slice(1);
+  const newestNews: NewsRoomData = initialNews[0];
+  const oldestNews: NewsRoomData[] = initialNews.slice(1);
   return (
     <section
       id="newsroom"

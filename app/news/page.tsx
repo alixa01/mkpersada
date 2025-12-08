@@ -1,9 +1,15 @@
 import PageHero from "@/components/sections/PageHero";
 import NewsSection from "@/components/news/NewsSection";
 import { getNews } from "@/lib/newsApi";
+import { notFound } from "next/navigation";
+
+export const revalidate = 600; // Revalidate every 60 seconds
 
 export default async function NewsPage() {
   const initialNews = await getNews();
+  if (!initialNews) {
+    notFound();
+  }
 
   return (
     <main id="news" className="relative overflow-hidden">

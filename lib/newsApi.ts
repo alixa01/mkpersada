@@ -1,33 +1,53 @@
-import type { NewsDB, NewsData } from "@/types/news";
+import type { NewsData } from "@/types/news";
+import type { News } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
 export async function getNews(): Promise<NewsData[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/news`, {
-    cache: "no-store",
+  const rows = await prisma.news.findMany({
+    orderBy: { publishedAt: "desc" },
   });
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch news");
-  }
+  return mapToNewsDataList(rows);
+}
 
-  const data = (await res.json()) as NewsDB[];
-
-  return data.map((item) => {
-    const published = new Date(item.publishedAt);
-
-    return {
-      id: item.id,
-      title: item.title,
-      slug: item.slug,
-      category: item.category,
-      imageUrl: item.imageUrl,
-      excerpt: item.excerpt,
-      body: item.body,
-      publishedAt: published.toISOString(),
-      dateLabel: new Intl.DateTimeFormat("id-ID", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      }).format(published),
-    };
+export async function getLatestNews(limit: number): Promise<NewsData[]> {
+  const rows = await prisma.news.findMany({
+    orderBy: { publishedAt: "desc" },
+    take: limit,
   });
+
+  return mapToNewsDataList(rows);
+}
+
+export async function getNewsBySlug(slug: string): Promise<NewsData | null> {
+  const row = await prisma.news.findUnique({
+    where: { slug },
+  });
+  if (!row) return null;
+
+  return mapToNewsData(row);
+}
+
+function mapToNewsDataList(rows: News[]): NewsData[] {
+  return rows.map(mapToNewsData);
+}
+
+function mapToNewsData(row: News): NewsData {
+  const published = new Date(row.publishedAt);
+
+  return {
+    id: row.id,
+    title: row.title,
+    slug: row.slug,
+    category: row.category,
+    imageUrl: row.imageUrl,
+    excerpt: row.excerpt,
+    body: row.body,
+    publishedAt: published.toISOString(),
+    dateLabel: new Intl.DateTimeFormat("id-ID", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    }).format(published),
+  };
 }

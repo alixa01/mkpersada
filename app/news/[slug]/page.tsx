@@ -1,57 +1,19 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import NewsHeroDetail from "@/components/news/[slug]/NewsHeroDetail";
-import NewsContent from "@/components/news/[slug]/NewsWithTOC/NewsContent";
-import TableContent from "@/components/news/[slug]/NewsWithTOC/TableContent";
 import NewsHeading from "../../../components/news/[slug]/NewsHeading/NewsHeading";
 import NewsWithTOC from "@/components/news/[slug]/NewsWithTOC";
+import type { NewsData } from "@/types/news";
+import { getNewsBySlug } from "@/lib/newsApi";
 
-type NewsApi = {
-  id: string;
-  title: string;
-  slug: string;
-  category: string;
-  imageUrl: string;
-  excerpt: string;
-  body: string;
-  publishedAt: string;
-  createdAt: string;
-  updatedAt: string;
-};
+export const revalidate = 600;
 
-// get news dari slug
-async function getNews(slug: string): Promise<NewsApi> {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/news/${slug}`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (res.status === 404) {
+async function getNews(slug: string): Promise<NewsData> {
+  const news = await getNewsBySlug(slug);
+  if (!news) {
     notFound();
   }
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch news item");
-  }
-
-  const news = (await res.json()) as NewsApi;
   return news;
-}
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const news = await getNews(slug);
-
-  return {
-    title: news.title,
-    description: news.excerpt,
-  };
 }
 
 export default async function NewsDetailPage({
@@ -61,12 +23,6 @@ export default async function NewsDetailPage({
 }) {
   const { slug } = await params;
   const news = await getNews(slug);
-
-  const publishedDate = new Date(news.publishedAt).toLocaleDateString("id-Id", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
 
   return (
     <main className="relative overflow-hidden">
@@ -81,7 +37,7 @@ export default async function NewsDetailPage({
           <NewsHeading
             category={news.category}
             title={news.title}
-            publishedDate={publishedDate}
+            publishedDate={news.dateLabel}
           />
         </div>
       </section>
@@ -92,4 +48,18 @@ export default async function NewsDetailPage({
       </section>
     </main>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const news = await getNews(slug);
+
+  return {
+    title: news.title,
+    description: news.excerpt,
+  };
 }

@@ -5,10 +5,26 @@ import ContactUsSection from "@/components/home/ContactUsSection";
 import VisionProject from "@/components/home/VisionProject";
 import Navbar from "@/components/layout/Navbar";
 import HeroSection from "@/components/home/HeroSection";
-import { getNews } from "@/lib/newsApi";
+import { getLatestNews } from "@/lib/newsApi";
+import { notFound } from "next/navigation";
+import type { NewsRoomData } from "@/types/news";
+
+export const revalidate = 600;
 
 export default async function Home() {
-  const initialNews = await getNews();
+  const latestNews = await getLatestNews(5);
+  if (!latestNews) {
+    notFound();
+  }
+
+  const initialNews: NewsRoomData[] = latestNews.map((item) => ({
+    title: item.title,
+    slug: item.slug,
+    date: item.dateLabel,
+    category: item.category,
+    image: item.imageUrl,
+  }));
+
   return (
     <>
       <Navbar variant="scaleOut" />
@@ -16,16 +32,7 @@ export default async function Home() {
       <AboutUsSection />
       <VisionProject />
       <ClientsPartnersSection />
-      <NewsRoomSection
-        initialNews={initialNews.map((item) => ({
-          id: item.id,
-          title: item.title,
-          date: item.dateLabel,
-          category: item.category,
-          image: item.imageUrl,
-          slug: item.slug,
-        }))}
-      />
+      <NewsRoomSection initialNews={initialNews} />
       <ContactUsSection />
     </>
   );
