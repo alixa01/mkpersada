@@ -6,10 +6,8 @@ import { notFound } from "next/navigation";
 export const revalidate = 600; // Revalidate every 60 seconds
 
 export default async function NewsPage() {
-  const initialNews = await getNews();
-  if (!initialNews) {
-    notFound();
-  }
+  const allNews = await getNews();
+  if (!allNews) notFound();
 
   return (
     <main id="news" className="relative overflow-hidden">
@@ -23,7 +21,7 @@ export default async function NewsPage() {
         id="news"
         className="bg-gradient-to-r from-[#194670] to-[#0C2741] border-t border-slate-300/20 relative">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 py-6 sm:py-8 lg:py-0">
-          <NewsSection initialNews={initialNews} />
+          <NewsSection initialNews={allNews} />
         </div>
       </section>
     </main>
