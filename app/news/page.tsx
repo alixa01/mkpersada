@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import PageHero from "@/components/sections/PageHero";
 import NewsSection from "@/components/news/NewsSection";
 import { getNews } from "@/lib/newsApi";
@@ -21,7 +22,14 @@ export default async function NewsPage() {
         id="news"
         className="bg-gradient-to-r from-[#194670] to-[#0C2741] border-t border-slate-300/20 relative">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 py-6 sm:py-8 lg:py-0">
-          <NewsSection initialNews={allNews} />
+          <Suspense
+            fallback={
+              <div className="flex justify-center items-center py-20">
+                <div className="text-slate-300">Loading news...</div>
+              </div>
+            }>
+            <NewsSection initialNews={allNews} />
+          </Suspense>
         </div>
       </section>
     </main>
