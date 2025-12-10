@@ -78,7 +78,11 @@ export default function NewsRoomSection({
                   transition={{ duration: 0.4, ease: "easeOut" }}
                   className="relative w-full h-full">
                   <Image
-                    src={newestNews.image}
+                    src={
+                      newestNews.imageUrls
+                        ? newestNews.imageUrls[0]
+                        : `${newestNews.title}`
+                    }
                     alt={newestNews.title}
                     fill
                     className="object-cover"
@@ -139,7 +143,9 @@ export default function NewsRoomSection({
                       transition={{ duration: 0.4, ease: "easeOut" }}
                       className="relative w-full h-full">
                       <Image
-                        src={item.image}
+                        src={
+                          item.imageUrls ? item.imageUrls[0] : `${item.title}`
+                        }
                         alt={item.title}
                         fill
                         className="object-cover"

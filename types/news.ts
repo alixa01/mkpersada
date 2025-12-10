@@ -7,7 +7,7 @@ export type NewsData = {
   title: string;
   slug: string;
   category: string;
-  imageUrl: string;
+  imageUrls: string[];
   excerpt: string;
   body: string;
   publishedAt: string;
@@ -20,7 +20,7 @@ export type NewsCardData = {
   description: string;
   date: string;
   category: string;
-  image: string;
+  imageUrls: string[];
   slug: string;
 };
 
@@ -29,5 +29,5 @@ export type NewsRoomData = {
   slug: string;
   date: string;
   category: string;
-  image: string;
+  imageUrls: string[];
 };

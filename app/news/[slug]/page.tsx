@@ -28,7 +28,9 @@ export default async function NewsDetailPage({
     <main className="relative overflow-hidden">
       {/* hero / header */}
       <section className="w-full relative">
-        <NewsHeroDetail image={news.imageUrl} />
+        <NewsHeroDetail
+          image={news.imageUrls ? news.imageUrls[0] : `${news.slug}`}
+        />
       </section>
 
       <section className="bg-slate-100 text-slate-800">

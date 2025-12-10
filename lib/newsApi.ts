@@ -40,7 +40,7 @@ function mapToNewsData(row: News): NewsData {
     title: row.title,
     slug: row.slug,
     category: row.category,
-    imageUrl: row.imageUrl,
+    imageUrls: row.imageUrls,
     excerpt: row.excerpt,
     body: row.body,
     publishedAt: published.toISOString(),

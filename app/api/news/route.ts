@@ -23,16 +23,16 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { title, category, imageUrl, excerpt, body: content } = body;
+    const { title, category, imageUrls, excerpt, body: content } = body;
 
-    if (!title || !category || !imageUrl || !excerpt || !content) {
+    if (!title || !category || !imageUrls || !excerpt || !content) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 }
       );
     }
 
-    const ifSupabaseUrl = imageUrl.includes("supabase.co/storage");
+    const ifSupabaseUrl = imageUrls.includes("supabase.co/storage");
     if (!ifSupabaseUrl) {
       console.warn("Image URL is not from Supabase storage.");
     }
@@ -49,7 +49,7 @@ export async function POST(req: Request) {
         title,
         slug,
         category,
-        imageUrl,
+        imageUrls,
         excerpt,
         body: content,
       },

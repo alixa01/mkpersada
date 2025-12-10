@@ -63,7 +63,7 @@ export default function NewsSection({
     description: item.excerpt,
     date: item.dateLabel,
     category: item.category,
-    image: item.imageUrl,
+    imageUrls: item.imageUrls,
     slug: item.slug,
   }));
 

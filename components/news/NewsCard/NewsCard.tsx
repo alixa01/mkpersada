@@ -14,7 +14,7 @@ export default function NewsCard({ items }: { items: NewsCardData[] }) {
             <div className="basis-[20%] md:order-2">
               <div className="relative w-full aspect-[16/9] md:aspect-[4/3] lg:aspect-[1/1] rounded-lg overflow-hidden">
                 <Image
-                  src={item.image}
+                  src={item.imageUrls ? item.imageUrls[0] : `${item.slug}`}
                   alt={item.title}
                   fill
                   className="object-cover"

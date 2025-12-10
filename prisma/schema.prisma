@@ -19,7 +19,7 @@ model News {
   title       String
   slug        String   @unique
   category    String
-  imageUrl    String
+  imageUrls   String[]
   excerpt     String
   body        String   @db.Text
 

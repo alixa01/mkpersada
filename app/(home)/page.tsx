@@ -22,7 +22,7 @@ export default async function Home() {
     slug: item.slug,
     date: item.dateLabel,
     category: item.category,
-    image: item.imageUrl,
+    imageUrls: item.imageUrls,
   }));
 
   return (

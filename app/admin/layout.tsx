@@ -9,7 +9,7 @@ export default function AdminLayout({
   return (
     <SidebarProvider>
       <AdminSidebar />
-      <main className="w-full px-5">
+      <main className="w-full px-5 mt-3">
         <SidebarTrigger />
         {children}
       </main>
