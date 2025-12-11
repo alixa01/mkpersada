@@ -2,7 +2,7 @@ import FormNews from "@/components/admin/(news)/FormNews/FormNews";
 
 export default function AdminPage() {
   return (
-    <div>
+    <div className="py-2">
       <FormNews />
     </div>
   );

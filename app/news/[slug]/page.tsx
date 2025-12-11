@@ -33,7 +33,7 @@ export default async function NewsDetailPage({
         />
       </section>
 
-      <section className="bg-slate-100 text-slate-800">
+      <section className="bg-white text-slate-800">
         <div className="mx-auto max-w-7xl lg:pt-8 pt-5 px-6 lg:px-8">
           {/* heading */}
           <NewsHeading
@@ -45,7 +45,7 @@ export default async function NewsDetailPage({
       </section>
 
       {/* content */}
-      <section className="bg-slate-100 text-slate-800">
+      <section className="bg-white text-slate-800">
         <NewsWithTOC news={news} />
       </section>
     </main>

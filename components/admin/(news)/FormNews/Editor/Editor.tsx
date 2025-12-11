@@ -5,6 +5,8 @@ import Underline from "@tiptap/extension-underline";
 import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
+import FileHandler from "@tiptap/extension-file-handler";
+import Image from "@tiptap/extension-image";
 import {
   Bold,
   Italic,
@@ -16,6 +18,7 @@ import {
   Heading2,
   Link as LinkIcon,
 } from "lucide-react";
+import { useEffect } from "react";
 
 type EditorProps = {
   value?: string;
@@ -32,6 +35,64 @@ export default function EditorSection({ value, onChange }: EditorProps) {
       }),
       Underline,
       Highlight,
+      Image,
+      FileHandler.configure({
+        allowedMimeTypes: [
+          "image/png",
+          "image/jpeg",
+          "image/gif",
+          "image/webp",
+        ],
+        onDrop: (currentEditor, files, pos) => {
+          files.forEach((file) => {
+            (async () => {
+              try {
+                const url = await uploadImageToCloudinary(file);
+
+                currentEditor
+                  .chain()
+                  .insertContentAt(pos, {
+                    type: "image",
+                    attrs: {
+                      src: url,
+                    },
+                  })
+                  .focus()
+                  .run();
+              } catch (err) {
+                console.error("Upload failed", err);
+              }
+            })();
+          });
+        },
+
+        onPaste: (currentEditor, files, htmlContent) => {
+          files.forEach((file) => {
+            if (htmlContent) {
+              return false;
+            }
+
+            (async () => {
+              try {
+                const url = await uploadImageToCloudinary(file);
+
+                currentEditor
+                  .chain()
+                  .insertContentAt(currentEditor.state.selection.anchor, {
+                    type: "image",
+                    attrs: {
+                      src: url,
+                    },
+                  })
+                  .focus()
+                  .run();
+              } catch (error) {
+                console.error("Upload failed", error);
+              }
+            })();
+          });
+        },
+      }),
       Link.configure({ openOnClick: false, linkOnPaste: true }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Placeholder.configure({ placeholder: "Write your news content here..." }),
@@ -44,12 +105,20 @@ export default function EditorSection({ value, onChange }: EditorProps) {
     },
   });
 
+  useEffect(() => {
+    if (!editor) return;
+
+    if (!value || value.trim() === "") {
+      editor.commands.clearContent(true);
+    }
+  }, [value, editor]);
+
   if (!editor) return null;
 
   return (
     <div className="border rounded-xl bg-white shadow-sm">
       {/* toolbar */}
-      <div className="flex flex-wrap items-center gap-1 border-b px-3 py-2 bg-slate-50">
+      <div className="flex flex-wrap rounded-xl items-center gap-1 border-b px-3 py-2 bg-slate-50">
         <ToolbarButton
           isActive={editor.isActive("heading", { level: 2 })}
           onClick={() =>
@@ -117,7 +186,7 @@ export default function EditorSection({ value, onChange }: EditorProps) {
       </div>
 
       {/* editor */}
-      <div className="px-4 py-3 min-h-[220px] prose max-w-none prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1">
+      <div className="px-4 py-3 min-h-fit prose max-w-none prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-ol:my-1">
         <EditorContent editor={editor} />
       </div>
     </div>
@@ -146,4 +215,22 @@ function ToolbarButton({
       {children}
     </button>
   );
+}
+
+async function uploadImageToCloudinary(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch("api/upload-image", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || "Image upload failed");
+  }
+
+  return data.url as string;
 }

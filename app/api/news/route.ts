@@ -23,19 +23,21 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { title, category, imageUrls, excerpt, body: content } = body;
+    const { title, category, excerpt, contentHtml } = body;
 
-    if (!title || !category || !imageUrls || !excerpt || !content) {
+    if (!title || !category || !excerpt || !contentHtml) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 }
       );
     }
 
-    const ifSupabaseUrl = imageUrls.includes("supabase.co/storage");
-    if (!ifSupabaseUrl) {
-      console.warn("Image URL is not from Supabase storage.");
-    }
+    const imageUrls = extractImageUrls(contentHtml);
+
+    // const ifSupabaseUrl = imageUrls.includes("supabase.co/storage");
+    // if (!ifSupabaseUrl) {
+    //   console.warn("Image URL is not from Supabase storage.");
+    // }
 
     const slug =
       body.slug ??
@@ -51,7 +53,7 @@ export async function POST(req: Request) {
         category,
         imageUrls,
         excerpt,
-        body: content,
+        body: contentHtml,
       },
     });
 
@@ -73,4 +75,16 @@ export async function POST(req: Request) {
       );
     }
   }
+}
+
+function extractImageUrls(html: string): string[] {
+  const urls = new Set<string>();
+  const regex = /<img[^>]+src=["']([^"']+)["']/g;
+
+  let match;
+  while ((match = regex.exec(html)) !== null) {
+    urls.add(match[1]);
+  }
+
+  return Array.from(urls);
 }

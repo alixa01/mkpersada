@@ -32,6 +32,76 @@
   background-size: 60px 60px;
 }
 
+.news-body img {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 500px;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  object-fit: contain;
+  vertical-align: top;
+}
+.news-body p img {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 500px;
+  margin-right: 0.5rem;
+  margin-bottom: 1rem;
+  object-fit: contain;
+  vertical-align: top;
+}
+
+.news-body p {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.news-body h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-style: bold;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.news-body ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .news-body img {
+    width: 100%;
+    height: 100%;
+    margin-right: 0rem;
+  }
+  .news-body p img {
+    width: 100%;
+    height: 100%;
+    margin-right: 0rem;
+  }
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #9ca3af; /* abu-abu tailwind: text-gray-400 */
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.tiptap {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

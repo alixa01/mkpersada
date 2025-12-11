@@ -6,16 +6,48 @@ import EditorSection from "./Editor";
 export default function FormNews() {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
-  const [body, setBody] = useState("");
+  const [excerpt, setExcerpt] = useState("");
+  const [contentHtml, setContentHtml] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log({ title, body });
-    // logic form submission
-  };
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch("/api/news", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          category,
+          excerpt,
+          contentHtml,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        console.error("Error", data);
+        return;
+      }
+
+      setTitle("");
+      setCategory("");
+      setExcerpt("");
+      setContentHtml("");
+      alert("News submitted!");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 w-full">
+    <form onSubmit={handleSubmit} className="space-y-4 w-full">
       <div className="w-[50%]">
         <label className="block text-sm font-medium text-slate-700 mb-1">
           Title
@@ -24,9 +56,10 @@ export default function FormNews() {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
+          className="mt-1 block w-full px-2 py-2 focus:outline-none focus:ring-0 border rounded-xl shadow-sm sm:text-sm mb-2"
           placeholder="Enter news title..."
         />
+
         <label className="block text-sm font-medium text-slate-700 mb-1">
           Category
         </label>
@@ -34,8 +67,19 @@ export default function FormNews() {
           type="text"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
+          className="mt-1 block w-full px-2 py-2 focus:outline-none focus:ring-0 border rounded-xl shadow-sm sm:text-sm"
           placeholder="Enter news category..."
+        />
+
+        <label className="block text-sm font-medium text-slate-700 mb-1">
+          Excerpt
+        </label>
+        <input
+          type="text"
+          value={excerpt}
+          onChange={(e) => setExcerpt(e.target.value)}
+          className="mt-1 block w-full px-2 py-2 focus:outline-none focus:ring-0 border rounded-xl shadow-sm sm:text-sm"
+          placeholder="Enter news excerpt..."
         />
       </div>
 
@@ -43,13 +87,14 @@ export default function FormNews() {
         <label className="block text-sm font-medium text-slate-700 mb-1">
           Content
         </label>
-        <EditorSection value={body} onChange={setBody} />
+        <EditorSection value={contentHtml} onChange={setContentHtml} />
       </div>
 
       <button
         type="submit"
+        disabled={isSubmitting}
         className="px-4 py-2 rounded-lg bg-[#194670] text-white text-sm font-medium hover:bg-[#143657]">
-        Publish News
+        {isSubmitting ? "Submitting..." : "Submit News"}
       </button>
     </form>
   );

@@ -6,7 +6,7 @@ export default function NewsHeroDetail({ image }: { image: string }) {
       className="w-full h-[400px] relative overflow-hidden bg-cover bg-center flex items-center justify-center flex-col pt-[75px]"
       style={{ backgroundImage: `url('${background}')` }}>
       {/* overlay */}
-      <div className="w-full absolute inset-0 bg-gradient-to-b from-slate-100/20 from-40% to-slate-100 to-100%" />
+      <div className="w-full absolute inset-0 bg-gradient-to-b from-white/20 from-40% to-white to-100%" />
     </div>
   );
 }
