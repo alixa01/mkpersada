@@ -51,7 +51,7 @@ export async function POST(req: Request) {
         title,
         slug,
         category,
-        imageUrls,
+        imageUrls: imageUrls.length ? imageUrls : [],
         excerpt,
         body: contentHtml,
       },
