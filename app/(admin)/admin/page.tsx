@@ -1,4 +1,4 @@
-import FormNews from "@/components/admin/(news)/FormNews/FormNews";
+import FormNews from "@/components/(admin)/admin/(news)/FormNews/FormNews";
 
 export default function AdminPage() {
   return (
