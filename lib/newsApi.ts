@@ -1,53 +1,80 @@
-import type { NewsData } from "@/types/news";
+import type { NewsData, NewsDataCreator } from "@/types/news";
 import type { News } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { DATE_FORMATTER } from "./formatters";
 
 export async function getNews(): Promise<NewsData[]> {
-  const rows = await prisma.news.findMany({
+  const news = await prisma.news.findMany({
     orderBy: { publishedAt: "desc" },
   });
 
-  return mapToNewsDataList(rows);
+  return news.map(mapToNewsData);
 }
 
 export async function getLatestNews(limit: number): Promise<NewsData[]> {
-  const rows = await prisma.news.findMany({
+  const news = await prisma.news.findMany({
     orderBy: { publishedAt: "desc" },
     take: limit,
   });
 
-  return mapToNewsDataList(rows);
+  return news.map(mapToNewsData);
 }
 
-export async function getNewsBySlug(slug: string): Promise<NewsData | null> {
-  const row = await prisma.news.findUnique({
+export async function getNewsBySlug(
+  slug: string
+): Promise<NewsDataCreator | null> {
+  const news = await prisma.news.findUnique({
     where: { slug },
+    include: {
+      creator: {
+        select: { id: true, name: true, profilePic: true },
+      },
+    },
   });
-  if (!row) return null;
 
-  return mapToNewsData(row);
+  if (!news) return null;
+
+  return news ? mapToNewsDataCreator(news) : null;
 }
 
-function mapToNewsDataList(rows: News[]): NewsData[] {
-  return rows.map(mapToNewsData);
+function formatDate(date: Date): { iso: string; label: string } {
+  return {
+    iso: date.toISOString(),
+    label: DATE_FORMATTER.format(date),
+  };
 }
 
-function mapToNewsData(row: News): NewsData {
-  const published = new Date(row.publishedAt);
+function mapToNewsData(news: News): NewsData {
+  const published = formatDate(new Date(news.publishedAt));
 
   return {
-    id: row.id,
-    title: row.title,
-    slug: row.slug,
-    category: row.category,
-    imageUrls: row.imageUrls,
-    excerpt: row.excerpt,
-    body: row.body,
-    publishedAt: published.toISOString(),
-    dateLabel: new Intl.DateTimeFormat("id-ID", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    }).format(published),
+    id: news.id,
+    title: news.title,
+    slug: news.slug,
+    category: news.category,
+    imageUrls: news.imageUrls,
+    excerpt: news.excerpt,
+    body: news.body,
+    publishedAt: published.iso,
+    dateLabel: published.label,
+  };
+}
+
+function mapToNewsDataCreator(
+  news: News & { creator: { id: string; name: string; profilePic: string } }
+): NewsDataCreator {
+  const published = formatDate(new Date(news.publishedAt));
+
+  return {
+    id: news.id,
+    title: news.title,
+    slug: news.slug,
+    category: news.category,
+    imageUrls: news.imageUrls,
+    excerpt: news.excerpt,
+    body: news.body,
+    publishedAt: published.iso,
+    dateLabel: published.label,
+    creator: news.creator,
   };
 }

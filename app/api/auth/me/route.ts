@@ -23,7 +23,6 @@ export async function GET(req: Request) {
 
   const authUser: AuthUser = {
     id: user.id,
-    username: user.username,
     name: user.name,
     profilePic: user.profilePic,
   };

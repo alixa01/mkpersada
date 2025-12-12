@@ -5,7 +5,7 @@ export default function NewsContent({
 }) {
   return (
     <div>
-      <p className="text-slate-800 text-base my-3 leading-relaxed">
+      <p className="text-slate-800 text-base my-6 leading-relaxed">
         {news.excerpt}
       </p>
       {/* body dari Tiptap (HTML) */}

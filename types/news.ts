@@ -14,6 +14,14 @@ export type NewsData = {
   dateLabel: string;
 };
 
+export type NewsDataCreator = NewsData & {
+  creator: {
+    id: string;
+    name: string;
+    profilePic: string;
+  };
+};
+
 export type NewsCardData = {
   id: string;
   title: string;

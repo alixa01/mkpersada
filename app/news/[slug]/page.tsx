@@ -3,12 +3,12 @@ import type { Metadata } from "next";
 import NewsHeroDetail from "@/components/news/[slug]/NewsHeroDetail";
 import NewsHeading from "../../../components/news/[slug]/NewsHeading/NewsHeading";
 import NewsWithTOC from "@/components/news/[slug]/NewsWithTOC";
-import type { NewsData } from "@/types/news";
+import type { NewsData, NewsDataCreator } from "@/types/news";
 import { getNewsBySlug } from "@/lib/newsApi";
 
 export const revalidate = 600;
 
-async function getNews(slug: string): Promise<NewsData> {
+async function getNews(slug: string): Promise<NewsDataCreator> {
   const news = await getNewsBySlug(slug);
   if (!news) {
     notFound();
@@ -40,6 +40,7 @@ export default async function NewsDetailPage({
             category={news.category}
             title={news.title}
             publishedDate={news.dateLabel}
+            creator={news.creator}
           />
         </div>
       </section>
