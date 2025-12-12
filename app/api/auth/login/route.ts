@@ -49,6 +49,7 @@ export async function POST(req: Request) {
         name: user.name,
         profilePic: user.profilePic,
       },
+      token,
     },
     { status: 200 }
   );
