@@ -1,7 +1,7 @@
 import type { NewsData, NewsDataCreator } from "@/types/news";
 import type { News } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-import { DATE_FORMATTER } from "./formatters";
+import { DATE_FORMATTER, timeAgo } from "./formatters";
 
 export async function getNews(): Promise<NewsData[]> {
   const news = await prisma.news.findMany({
@@ -56,6 +56,7 @@ function mapToNewsData(news: News): NewsData {
     excerpt: news.excerpt,
     body: news.body,
     publishedAt: published.iso,
+    relativeTime: timeAgo(published.iso),
     dateLabel: published.label,
   };
 }
@@ -74,6 +75,7 @@ function mapToNewsDataCreator(
     excerpt: news.excerpt,
     body: news.body,
     publishedAt: published.iso,
+    relativeTime: timeAgo(published.iso),
     dateLabel: published.label,
     creator: news.creator,
   };

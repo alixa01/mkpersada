@@ -6,11 +6,13 @@ export default function NewsHeading({
   title,
   publishedDate,
   creator,
+  relativeTime,
 }: {
   category: string;
   title: string;
   publishedDate: string;
   creator: NewsDataCreator["creator"];
+  relativeTime: string;
 }) {
   return (
     <>
@@ -36,8 +38,8 @@ export default function NewsHeading({
             <span className="text-xs md:text-sm font-semibold">
               {creator.name}
             </span>
-            <span className="text-xs text-slate-600 font-normal">
-              {publishedDate}
+            <span className="text-xs text-slate-600 font-normal ">
+              {publishedDate} <span>({relativeTime})</span>
             </span>
           </div>
         </div>

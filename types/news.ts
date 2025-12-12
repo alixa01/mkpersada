@@ -12,6 +12,7 @@ export type NewsData = {
   body: string;
   publishedAt: string;
   dateLabel: string;
+  relativeTime: string;
 };
 
 export type NewsDataCreator = NewsData & {

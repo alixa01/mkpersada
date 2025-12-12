@@ -40,6 +40,7 @@ export default async function NewsDetailPage({
             category={news.category}
             title={news.title}
             publishedDate={news.dateLabel}
+            relativeTime={news.relativeTime}
             creator={news.creator}
           />
         </div>
